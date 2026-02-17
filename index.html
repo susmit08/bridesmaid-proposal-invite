@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Special Question</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #ffe4e1; /* Misty Rose */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+        }
+
+        #container {
+            text-align: center;
+            background: white;
+            padding: 50px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            position: relative;
+            max-width: 400px;
+        }
+
+        h1 {
+            color: #d87093;
+            margin-bottom: 30px;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 18px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        #yesBtn {
+            background-color: #ff69b4;
+            color: white;
+        }
+
+        #yesBtn:hover {
+            transform: scale(1.1);
+        }
+
+        #noBtn {
+            background-color: #a9a9a9;
+            color: white;
+            position: absolute;
+        }
+
+        .success-screen {
+            display: none;
+        }
+
+        .emoji {
+            font-size: 50px;
+            display: block;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="container">
+        <div id="questionScreen">
+            <h1>Will you be my bridesmaid? 💍</h1>
+            <div class="buttons">
+                <button id="yesBtn" onclick="showSuccess()">Yes!</button>
+                <button id="noBtn" onmouseover="moveButton()" onclick="moveButton()">No</button>
+            </div>
+        </div>
+
+        <div id="successScreen" class="success-screen">
+            <h1>Yay! I can't wait! 🥰</h1>
+            <p>It wouldn't be the same without you!</p>
+            <div class="emoji">💖✨🫂🥂🌸</div>
+        </div>
+    </div>
+
+    <script>
+        function moveButton() {
+            const btn = document.getElementById('noBtn');
+            
+            // Calculate random positions within the screen
+            // Subtracting button width/height to keep it within view
+            const x = Math.random() * (window.innerWidth - btn.offsetWidth);
+            const y = Math.random() * (window.innerHeight - btn.offsetHeight);
+
+            btn.style.position = 'fixed';
+            btn.style.left = x + 'px';
+            btn.style.top = y + 'px';
+        }
+
+        function showSuccess() {
+            document.getElementById('questionScreen').style.display = 'none';
+            document.getElementById('successScreen').style.display = 'block';
+            document.body.style.backgroundColor = '#ffc0cb'; // Change to pinker background
+        }
+    </script>
+</body>
+</html>
