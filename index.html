@@ -7,6 +7,7 @@
     <style>
         :root {
             --accent: #ff4d6d;
+            --soft-pink: #fff0f3;
         }
 
         body {
@@ -15,57 +16,73 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background: #fff0f3;
-            font-family: 'Arial', sans-serif;
-            overflow: hidden; /* Prevents scrollbars when button moves */
+            background: var(--soft-pink);
+            font-family: 'Poppins', sans-serif;
+            overflow: hidden;
         }
 
         #card {
             background: white;
-            padding: 40px;
-            border-radius: 25px;
-            box-shadow: 0 15px 35px rgba(255, 77, 109, 0.2);
+            padding: 50px;
+            border-radius: 30px;
+            box-shadow: 0 20px 50px rgba(255, 77, 109, 0.15);
             text-align: center;
-            width: 320px;
+            width: 350px;
+            z-index: 10;
         }
 
-        h1 { color: var(--accent); font-size: 24px; }
+        h1 {
+            color: var(--accent);
+            font-size: 26px;
+            margin-bottom: 30px;
+        }
 
         .btn-container {
             display: flex;
             justify-content: center;
+            align-items: center;
             gap: 20px;
-            margin-top: 30px;
-            height: 50px;
+            height: 60px; /* Maintains space so card doesn't shrink */
         }
 
         button {
-            padding: 12px 25px;
-            font-size: 16px;
+            padding: 12px 30px;
+            font-size: 18px;
             font-weight: bold;
             border-radius: 50px;
             border: none;
             cursor: pointer;
-            transition: transform 0.1s ease;
+            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         #yesBtn {
             background-color: var(--accent);
             color: white;
+            box-shadow: 0 4px 15px rgba(255, 77, 109, 0.3);
         }
 
+        /* Initial styling: sits next to Yes */
         #noBtn {
-            background-color: #dee2e6;
-            color: #495057;
-            position: absolute; /* Allows infinite movement anywhere */
+            background-color: #f8f9fa;
+            color: #6c757d;
+            border: 1px solid #dee2e6;
             z-index: 999;
         }
 
         #success {
             display: none;
+            animation: popIn 0.5s ease;
         }
 
-        .heart { font-size: 50px; margin-bottom: 10px; }
+        @keyframes popIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .emoji-box {
+            font-size: 60px;
+            margin-bottom: 15px;
+        }
     </style>
 </head>
 <body>
@@ -80,37 +97,42 @@
         </div>
 
         <div id="success">
-            <div class="heart">💖</div>
+            <div class="emoji-box">🥰🫂💖</div>
             <h1>I knew you'd say yes!</h1>
-            <p>Bestie for life! 🥂</p>
+            <p>I can't wait to have you by my side! 🥂</p>
         </div>
     </div>
 
     <script>
         function moveNo() {
             const btn = document.getElementById('noBtn');
+            const yesBtn = document.getElementById('yesBtn');
             
-            // Calculate random coordinates
-            // Subtracting 100px to ensure the button doesn't go off the edge of the screen
-            const x = Math.random() * (window.innerWidth - 100);
-            const y = Math.random() * (window.innerHeight - 50);
+            // Switch to fixed positioning so it can fly anywhere on the screen
+            btn.style.position = 'fixed';
 
-            // Apply the new position
+            // Calculate random coordinates
+            // We use (window.innerWidth - buttonWidth) to keep it inside the view
+            const x = Math.random() * (window.innerWidth - btn.offsetWidth);
+            const y = Math.random() * (window.innerHeight - btn.offsetHeight);
+
             btn.style.left = x + 'px';
             btn.style.top = y + 'px';
+
+            // Trend Feature: Make the "Yes" button slightly bigger each time
+            const currentScale = yesBtn.getAttribute('data-scale') || 1;
+            const newScale = parseFloat(currentScale) + 0.15;
             
-            // Subtle trick: make the Yes button slightly bigger each time No is dodged
-            const yes = document.getElementById('yesBtn');
-            const currentScale = yes.style.transform ? parseFloat(yes.style.transform.replace('scale(', '')) : 1;
-            if (currentScale < 2) {
-                yes.style.transform = `scale(${currentScale + 0.1})`;
+            if (newScale < 3) { // Limit growth so it doesn't cover the whole screen
+                yesBtn.style.transform = `scale(${newScale})`;
+                yesBtn.setAttribute('data-scale', newScale);
             }
         }
 
         function celebrate() {
             document.getElementById('ask').style.display = 'none';
             document.getElementById('success').style.display = 'block';
-            document.body.style.background = "#ffb3c1";
+            document.body.style.background = "linear-gradient(to bottom, #ffafbd, #ffc3a0)";
         }
     </script>
 </body>
