@@ -3,72 +3,104 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A Special Question</title>
+    <title>A Special Proposal 💍</title>
     <style>
+        :root {
+            --primary-pink: #ff85a2;
+            --secondary-pink: #f72585;
+            --soft-white: #fff5f7;
+        }
+
         body {
+            margin: 0;
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #ffe4e1; /* Misty Rose */
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #fce4ec 0%, #ffd1dc 100%);
+            font-family: 'Poppins', sans-serif;
             overflow: hidden;
         }
 
         #container {
             text-align: center;
-            background: white;
-            padding: 50px;
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            position: relative;
-            max-width: 400px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 3rem;
+            border-radius: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            border: 2px solid white;
+            backdrop-filter: blur(10px);
+            width: 90%;
+            max-width: 450px;
         }
 
         h1 {
-            color: #d87093;
-            margin-bottom: 30px;
+            color: var(--secondary-pink);
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
         }
 
-        .buttons {
+        /* The Button Container */
+        .btn-group {
             display: flex;
             justify-content: center;
-            gap: 20px;
+            align-items: center;
+            gap: 20px; /* Space between Yes and No */
+            height: 60px; /* Keeps layout stable when No moves */
+            position: relative;
         }
 
         button {
-            padding: 15px 30px;
-            font-size: 18px;
+            padding: 12px 35px;
+            font-size: 1.2rem;
+            font-weight: 600;
             border: none;
-            border-radius: 10px;
+            border-radius: 50px;
             cursor: pointer;
-            transition: transform 0.2s;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
 
         #yesBtn {
-            background-color: #ff69b4;
+            background: linear-gradient(45deg, var(--primary-pink), var(--secondary-pink));
             color: white;
+            z-index: 1;
         }
 
         #yesBtn:hover {
-            transform: scale(1.1);
+            transform: scale(1.15);
+            box-shadow: 0 8px 20px rgba(247, 37, 133, 0.4);
         }
 
         #noBtn {
-            background-color: #a9a9a9;
-            color: white;
-            position: absolute;
+            background-color: #ffffff;
+            color: #888;
+            border: 1px solid #ddd;
+            position: absolute; /* Needed for the jumping effect */
+            right: 50px; /* Initial position side-by-side */
         }
 
-        .success-screen {
+        /* Success Screen Styles */
+        #successScreen {
             display: none;
+            animation: fadeIn 0.8s ease-in;
         }
 
-        .emoji {
-            font-size: 50px;
-            display: block;
-            margin-top: 20px;
+        .emoji-rain {
+            font-size: 4rem;
+            margin: 20px 0;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
         }
     </style>
 </head>
@@ -76,38 +108,40 @@
 
     <div id="container">
         <div id="questionScreen">
-            <h1>Will you be my bridesmaid? 💍</h1>
-            <div class="buttons">
-                <button id="yesBtn" onclick="showSuccess()">Yes!</button>
-                <button id="noBtn" onmouseover="moveButton()" onclick="moveButton()">No</button>
+            <h1>Will you be my bridesmaid? ✨</h1>
+            <div class="btn-group">
+                <button id="yesBtn" onclick="celebrate()">Yes!</button>
+                <button id="noBtn" onmouseover="dodge()" onclick="dodge()">No</button>
             </div>
         </div>
 
-        <div id="successScreen" class="success-screen">
-            <h1>Yay! I can't wait! 🥰</h1>
-            <p>It wouldn't be the same without you!</p>
-            <div class="emoji">💖✨🫂🥂🌸</div>
+        <div id="successScreen">
+            <h1>Yay! I'm so happy! 🥰</h1>
+            <div class="emoji-rain">💍🌸🥂🫂</div>
+            <p style="color: #666;">Get ready for the best wedding ever!</p>
         </div>
     </div>
 
     <script>
-        function moveButton() {
+        function dodge() {
             const btn = document.getElementById('noBtn');
             
-            // Calculate random positions within the screen
-            // Subtracting button width/height to keep it within view
-            const x = Math.random() * (window.innerWidth - btn.offsetWidth);
-            const y = Math.random() * (window.innerHeight - btn.offsetHeight);
+            // Randomize position within the viewport, but keep away from edges
+            const padding = 100;
+            const newX = Math.random() * (window.innerWidth - padding * 2) + padding;
+            const newY = Math.random() * (window.innerHeight - padding * 2) + padding;
 
             btn.style.position = 'fixed';
-            btn.style.left = x + 'px';
-            btn.style.top = y + 'px';
+            btn.style.left = `${newX}px`;
+            btn.style.top = `${newY}px`;
         }
 
-        function showSuccess() {
+        function celebrate() {
             document.getElementById('questionScreen').style.display = 'none';
             document.getElementById('successScreen').style.display = 'block';
-            document.body.style.backgroundColor = '#ffc0cb'; // Change to pinker background
+            
+            // Optional: Background change on success
+            document.body.style.background = "linear-gradient(135deg, #ffafbd 0%, #ffc3a0 100%)";
         }
     </script>
 </body>
